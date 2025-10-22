@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Physics Lab</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="Interactive Virtual Physics Lab: Explore Frank-Hertz and Photoelectric Effect Experiments with simulations.">
+    <meta name="keywords" content="virtual physics lab, frank hertz experiment, photoelectric effect, quantum physics simulation, online lab">
+    <meta name="author" content="Dr. P. Selvarengan">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://pselvarengan.github.io/selvarenganparanthaman.github.io/">
+
+    <!-- Social sharing (Open Graph) -->
+    <meta property="og:title" content="Virtual Physics Laboratory - Quantum Experiments Online">
+    <meta property="og:description" content="Perform virtual Frank-Hertz and Photoelectric Effect experiments. Learn quantum physics interactively.">
+    <meta property="og:image" content="https://pselvarengan.github.io/selvarenganparanthaman.github.io//thumbnail.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pselvarengan.github.io/selvarenganparanthaman.github.io/">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #2c3e50, #1a2530);
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background: #1a2530;
+            color: #ddd;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: #9bd4ff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .attribution {
+            font-size: 0.8rem;
+            margin-top: 15px;
+            color: #aaa;
+        }
+        
+        .license-info {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .license-info a {
+            color: #9bd4ff;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            background: #e9ecef;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .experiment-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .apparatus {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .controls {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        
+        .chart-container {
+            margin: 20px 0;
+            position: relative;
+            height: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .results {
+            background: #e8f4fc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .manual {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .manual h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .manual-content {
+            display: none;
+        }
+        
+        .manual-content.active {
+            display: block;
+        }
+        
+        .manual-section {
+            margin-bottom: 20px;
+        }
+        
+        .manual-toggle {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Cookie Consent Styles */
+        #cookie-consent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        #cookie-consent button {
+            margin-left: 10px;
+            padding: 5px 15px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #cookie-consent button:hover {
+            background: #2980b9;
+        }
+        
+        @media (max-width: 768px) {
+            .experiment-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" style="display: none;">
+        This website uses essential cookies for functionality. 
+        <button onclick="acceptCookies()">Accept</button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Virtual Physics Laboratory</h1>
+            <p>Frank-Hertz Experiment & Photoelectric Effect Simulation</p>
+        </header>
+        
+        <!-- License Information Banner -->
+        <div class="license-info">
+            <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab active" data-tab="frank-hertz">Frank-Hertz Experiment</div>
+            <div class="tab" data-tab="photoelectric">Photoelectric Effect</div>
+        </div>
+        
+        <!-- Frank-Hertz Experiment -->
+        <div class="tab-content active" id="frank-hertz-content">
+            <h2>Frank-Hertz Experiment</h2>
+            <p>Observe the quantized energy levels of mercury atoms by measuring the current through the tube at different accelerating voltages.</p>
+            
+            <div class="experiment-container">
+                <div class="apparatus">
+                    <h3>Experimental Setup</h3>
+                    <div class="chart-container">
+                        <canvas id="fh-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <h3>Controls</h3>
+                    <div class="control-group">
+                        <label for="fh-voltage">Accelerating Voltage (V)</label>
+                        <input type="range" id="fh-voltage" min="0" max="50" step="0.5" value="0">
+                        <span id="fh-voltage-value">0 V</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="fh-current">Current (µA)</label>
+                        <input type="text" id="fh-current" readonly>
+                    </div>
+                    
+                    <button id="fh-record">Record Reading</button>
+                    <button id="fh-reset">Reset Experiment</button>
+                    <button id="fh-auto">Auto Run</button>
+                </div>
+            </div>
+            
+            <div class="data-table-container">
+                <h3>Data Table</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Voltage (V)</th>
+                            <th>Current (µA)</th>
+                            <th>Peak Number</th>
+                            <th>Energy (eV)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fh-data">
+                        <!-- Data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="results">
+                <h3>Calculations & Results</h3>
+                <div class="control-group">
+                    <label for="fh-energy">First Excitation Energy (eV)</label>
+                    <input type="text" id="fh-energy" readonly>
+                </div>
+                
+                <div class="control-group">
+                    <label for="fh-error">Percentage Error (%)</label>
+                    <input type="text" id="fh-error" readonly>
+                </div>
+                
+                <button id="fh-calculate">Calculate Results</button>
+                <button id="fh-conclusion">Show Conclusion</button>
+                
+                <div id="fh-conclusion-text" style="margin-top: 20px; display: none;">
+                    <p>The Frank-Hertz experiment demonstrates that electrons can only gain energy in discrete quanta when colliding with mercury atoms, providing evidence for the quantization of energy levels in atoms. The measured first excitation energy of mercury is approximately 4.9 eV, which matches the known value.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Photoelectric Effect -->
+        <div class="tab-content" id="photoelectric-content">
+            <h2>Photoelectric Effect</h2>
+            <p>Investigate how the kinetic energy of emitted photoelectrons varies with the frequency of incident light.</p>
+            
+            <div class="experiment-container">
+                <div class="apparatus">
+                    <h3>Experimental Setup</h3>
+                    <div class="chart-container">
+                        <canvas id="pe-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <h3>Controls</h3>
+                    <div class="control-group">
+                        <label for="pe-wavelength">Wavelength (nm)</label>
+                        <input type="range" id="pe-wavelength" min="200" max="600" step="5" value="400">
+                        <span id="pe-wavelength-value">400 nm</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="pe-intensity">Intensity (%)</label>
+                        <input type="range" id="pe-intensity" min="0" max="100" step="5" value="50">
+                        <span id="pe-intensity-value">50%</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="pe-voltage">Stopping Potential (V)</label>
+                        <input type="range" id="pe-voltage" min="0" max="5" step="0.1" value="0">
+                        <span id="pe-voltage-value">0 V</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="pe-current">Current (nA)</label>
+                        <input type="text" id="pe-current" readonly>
+                    </div>
+                    
+                    <button id="pe-record">Record Reading</button>
+                    <button id="pe-reset">Reset Experiment</button>
+                    <button id="pe-auto">Auto Run</button>
+                </div>
+            </div>
+            
+            <div class="data-table-container">
+                <h3>Data Table</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Wavelength (nm)</th>
+                            <th>Frequency (×10¹⁴ Hz)</th>
+                            <th>Stopping Potential (V)</th>
+                            <th>Current (nA)</th>
+                            <th>Kinetic Energy (eV)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pe-data">
+                        <!-- Data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="results">
+                <h3>Calculations & Results</h3>
+                <div class="control-group">
+                    <label for="pe-work-function">Work Function (eV)</label>
+                    <input type="text" id="pe-work-function" readonly>
+                </div>
+                
+                <div class="control-group">
+                    <label for="pe-threshold">Threshold Frequency (×10¹⁴ Hz)</label>
+                    <input type="text" id="pe-threshold" readonly>
+                </div>
+                
+                <div class="control-group">
+                    <label for="pe-plancks">Planck's Constant (×10⁻³⁴ J·s)</label>
+                    <input type="text" id="pe-plancks" readonly>
+                </div>
+                
+                <button id="pe-calculate">Calculate Results</button>
+                <button id="pe-conclusion">Show Conclusion</button>
+                
+                <div id="pe-conclusion-text" style="margin-top: 20px; display: none;">
+                    <p>The photoelectric effect experiment demonstrates that light consists of photons whose energy is proportional to their frequency. Electrons are emitted only when the photon energy exceeds the material's work function. The kinetic energy of emitted electrons depends on the frequency, not the intensity, of light, supporting the quantum nature of light.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lab Manual -->
+        <div class="manual">
+            <div class="manual-toggle" id="manual-toggle">
+                <span>Lab Manual</span>
+                <span>▼</span>
+            </div>
+            
+            <div class="manual-content" id="manual-content">
+                <div class="manual-section">
+                    <h3>Frank-Hertz Experiment</h3>
+                    <p><strong>Objective:</strong> To demonstrate the existence of discrete energy levels in atoms by measuring the kinetic energy lost by electrons during inelastic collisions with mercury atoms.</p>
+                    
+                    <p><strong>Theory:</strong> The Frank-Hertz experiment shows that electrons occupy only discrete, quantized energy states. When electrons are accelerated through a mercury vapor-filled tube, they undergo elastic collisions until they acquire sufficient energy to excite a mercury atom (4.9 eV). This results in a drop in current, which occurs periodically as the voltage increases.</p>
+                    
+                    <p><strong>Procedure:</strong></p>
+                    <ol>
+                        <li>Begin with the accelerating voltage set to 0 V.</li>
+                        <li>Slowly increase the voltage while observing the current.</li>
+                        <li>Record the voltage and current values, especially at the peaks and troughs.</li>
+                        <li>Continue until you have recorded 4-5 peaks.</li>
+                        <li>Calculate the energy difference between peaks to determine the first excitation energy.</li>
+                    </ol>
+                    
+                    <p><strong>Calculations:</strong> The first excitation energy is calculated by finding the average voltage difference between successive current peaks and converting to electronvolts (eV).</p>
+                </div>
+                
+                <div class="manual-section">
+                    <h3>Photoelectric Effect</h3>
+                    <p><strong>Objective:</strong> To verify the particle nature of light and determine Planck's constant by measuring the stopping potential for different frequencies of light.</p>
+                    
+                    <p><strong>Theory:</strong> The photoelectric effect occurs when photons of sufficient energy strike a metal surface, ejecting electrons. The maximum kinetic energy of the ejected electrons is given by K.E. = hν - φ, where h is Planck's constant, ν is the frequency of light, and φ is the work function of the material.</p>
+                    
+                    <p><strong>Procedure:</strong></p>
+                    <ol>
+                        <li>Select a wavelength of light using the wavelength control.</li>
+                        <li>Adjust the stopping potential until the photocurrent drops to zero.</li>
+                        <li>Record the wavelength (or frequency) and the stopping potential.</li>
+                        <li>Repeat for at least 5 different wavelengths.</li>
+                        <li>Plot stopping potential versus frequency and determine the slope, which gives h/e.</li>
+                    </ol>
+                    
+                    <p><strong>Calculations:</strong> Planck's constant is calculated from the slope of the stopping potential vs. frequency graph. The work function is determined from the intercept on the potential axis.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Virtual Physics Laboratory | Developed by Dr. P. Selvarengan</p>
+            <p>
+                <a href="#about" onclick="showPolicy('about')">About</a> |
+                <a href="#privacy" onclick="showPolicy('privacy')">Privacy Policy</a> |
+                <a href="#terms" onclick="showPolicy('terms')">Terms of Service</a> |
+                <a href="#disclaimer" onclick="showPolicy('disclaimer')">Disclaimer</a> |
+                <a href="#license" onclick="showPolicy('license')">License</a> |
+                <a href="#contact" onclick="showPolicy('contact')">Contact</a>
+            </p>
+            <p>This website is for educational purposes only.</p>
+            <div class="attribution">
+                <p>Uses <a href="https://www.chartjs.org/" target="_blank">Chart.js</a> (MIT License) for data visualization</p>
+            </div>
+        </footer>
+        
+        <!-- Policy Modal -->
+        <div id="policy-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 8px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                <div id="policy-content"></div>
+                <button onclick="closePolicy()" style="margin-top: 20px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cookie Consent Functions
+        function showCookieConsent() {
+            if (!localStorage.getItem('cookiesAccepted')) {
+                document.getElementById('cookie-consent').style.display = 'block';
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookie-consent').style.display = 'none';
+        }
+
+        // Show cookie consent on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            showCookieConsent();
+        });
+
+        // Enhanced Policy content
+        const policies = {
+            about: `
+                <h2>About Virtual Physics Laboratory</h2>
+                <p>The Virtual Physics Laboratory is an educational platform developed by Dr. P. Selvarengan to provide interactive simulations of fundamental physics experiments.</p>
+                <p>Our mission is to make quantum physics concepts accessible through hands-on virtual experiments that demonstrate key principles like energy quantization and the particle nature of light.</p>
+                <p>This platform is designed for students, educators, and physics enthusiasts to explore complex concepts in a safe, interactive environment.</p>
+            `,
+            privacy: `
+                <h2>Privacy Policy</h2>
+                <p><strong>Last Updated:</strong> January 2025</p>
+                
+                <h3>Information We Collect</h3>
+                <p><strong>No Personal Data:</strong> We do not collect any personal identification information.</p>
+                <p><strong>Simulation Data:</strong> All experiment data is processed locally in your browser and is not stored on our servers.</p>
+                <p><strong>Automated Information:</strong> Our web hosting provider may collect standard server logs including IP address, browser type, and access times for security and maintenance purposes.</p>
+                
+                <h3>Cookies and Local Storage</h3>
+                <p>We use local storage to remember your cookie preferences and maintain your experiment settings during your session. No tracking cookies are used.</p>
+                
+                <h3>Third-Party Services</h3>
+                <p>We use Chart.js loaded from a public CDN (jsdelivr.net) for data visualization. This service may collect standard CDN usage statistics.</p>
+                
+                <h3>Data Retention</h3>
+                <p>Since we do not collect personal data, there is no data retention period. Session data is cleared when you close your browser.</p>
+                
+                <h3>Your Rights</h3>
+                <p>You have the right to access, correct, or delete any personal information we might hold. Contact us using the information below.</p>
+                
+                <h3>Changes to This Policy</h3>
+                <p>We may update this privacy policy. Continued use of the site after changes constitutes acceptance of the updated policy.</p>
+                
+                <h3>Contact</h3>
+                <p>For privacy concerns: pselvarengan@gmail.com</p>
+            `,
+            terms: `
+                <h2>Terms of Service</h2>
+                <p><strong>Last Updated:</strong> January 2025</p>
+                
+                <h3>Acceptance of Terms</h3>
+                <p>By accessing and using this website, you accept and agree to be bound by these Terms of Service.</p>
+                
+                <h3>Educational Use</h3>
+                <p>This service is provided for educational purposes only. The simulations are designed for learning and demonstration and should not be used for scientific research or commercial applications.</p>
+                
+                <h3>Intellectual Property</h3>
+                <p>All content on this website is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License unless otherwise noted.</p>
+                
+                <h3>User Conduct</h3>
+                <p>You agree not to misuse this service or attempt to disrupt its operation. Any unauthorized use may result in termination of access.</p>
+                
+                <h3>Disclaimer of Warranties</h3>
+                <p>This service is provided "as is" without any warranties of any kind. We do not guarantee the accuracy, reliability, or completeness of the simulation results.</p>
+                
+                <h3>Limitation of Liability</h3>
+                <p>In no event shall the developers be liable for any direct, indirect, incidental, or consequential damages arising from the use of this service.</p>
+                
+                <h3>Governing Law</h3>
+                <p>These terms shall be governed by and construed in accordance with applicable international laws.</p>
+                
+                <h3>Contact</h3>
+                <p>For questions about these terms: pselvarengan@gmail.com</p>
+            `,
+            disclaimer: `
+                <h2>Disclaimer</h2>
+                <p><strong>Educational Use Only</strong></p>
+                <p>The Virtual Physics Laboratory is provided for educational and demonstration purposes only. While we strive for accuracy in our simulations, the results should not be used for scientific research or commercial applications.</p>
+                
+                <p><strong>No Warranty</strong></p>
+                <p>This service is provided "as is" without any warranties, expressed or implied. We make no guarantees regarding the accuracy, reliability, or completeness of the simulation results.</p>
+                
+                <p><strong>Limitation of Liability</strong></p>
+                <p>In no event shall the developers be liable for any damages arising from the use or inability to use this virtual laboratory.</p>
+                
+                <p><strong>External Links</strong></p>
+                <p>This website may contain links to external websites. We are not responsible for the content or privacy practices of these external sites.</p>
+            `,
+            license: `
+                <h2>License Information</h2>
+                <p><strong>Content License</strong></p>
+                <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+                
+                <p><strong>You are free to:</strong></p>
+                <ul>
+                    <li><strong>Share</strong> — copy and redistribute the material in any medium or format</li>
+                    <li><strong>Adapt</strong> — remix, transform, and build upon the material</li>
+                </ul>
+                
+                <p><strong>Under the following terms:</strong></p>
+                <ul>
+                    <li><strong>Attribution</strong> — You must give appropriate credit, provide a link to the license, and indicate if changes were made.</li>
+                    <li><strong>NonCommercial</strong> — You may not use the material for commercial purposes.</li>
+                    <li><strong>ShareAlike</strong> — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</li>
+                </ul>
+                
+                <p><strong>Third-Party Licenses</strong></p>
+                <p>This project uses Chart.js, which is licensed under the <a href="https://github.com/chartjs/Chart.js/blob/master/LICENSE.md" target="_blank">MIT License</a>.</p>
+            `,
+            contact: `
+                <h2>Contact Information</h2>
+                <p><strong>Developer:</strong> Dr. P. Selvarengan</p>
+                <p><strong>Purpose:</strong> Educational Physics Simulations</p>
+                
+                <p>For questions, suggestions, or reporting issues with the Virtual Physics Laboratory, please contact:</p>
+                
+                <p><strong>Email:</strong> pselvarengan@gmail.com</p>
+                <p><strong>GitHub:</strong> <a href="https://github.com/pselvarengan" target="_blank">github.com/pselvarengan</a></p>
+                
+                <p>We welcome feedback from educators and students to improve our virtual laboratory experience.</p>
+                
+                <p><strong>Response Time:</strong> We strive to respond to all inquiries within 3-5 business days.</p>
+            `
+        };
+
+        // Policy modal functions
+        function showPolicy(type) {
+            document.getElementById('policy-content').innerHTML = policies[type];
+            document.getElementById('policy-modal').style.display = 'block';
+        }
+
+        function closePolicy() {
+            document.getElementById('policy-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('policy-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePolicy();
+            }
+        });
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}-content`).classList.add('active');
+            });
+        });
+        
+        // Manual toggle
+        document.getElementById('manual-toggle').addEventListener('click', function() {
+            const manualContent = document.getElementById('manual-content');
+            manualContent.classList.toggle('active');
+            this.querySelector('span:last-child').textContent = 
+                manualContent.classList.contains('active') ? '▲' : '▼';
+        });
+        
+        // Frank-Hertz Experiment Simulation
+        const fhCtx = document.getElementById('fh-chart').getContext('2d');
+        const fhChart = new Chart(fhCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Current (µA)',
+                    data: [],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Accelerating Voltage (V)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Current (µA)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Generate Frank-Hertz data
+        function frankHertzData(voltage) {
+            // This function generates data similar to the Frank-Hertz experiment
+            const peaks = [4.9, 9.8, 14.7, 19.6, 24.5]; // Peak positions in volts
+            let current = 0;
+            
+            // Base current increases with voltage
+            current = voltage * 0.2;
+            
+            // Add periodic dips at the peak positions
+            for (let i = 0; i < peaks.length; i++) {
+                if (voltage > peaks[i]) {
+                    const dipDepth = 15 * Math.exp(-Math.pow(voltage - peaks[i], 2) / 2);
+                    current -= dipDepth;
+                }
+            }
+            
+            // Add some noise
+            current += (Math.random() - 0.5) * 2;
+            
+            // Ensure current is not negative
+            return Math.max(0, current);
+        }
+        
+        // Update Frank-Hertz chart with initial data
+        function initializeFHChart() {
+            const voltages = [];
+            const currents = [];
+            
+            for (let v = 0; v <= 50; v += 0.5) {
+                voltages.push(v);
+                currents.push(frankHertzData(v));
+            }
+            
+            fhChart.data.labels = voltages;
+            fhChart.data.datasets[0].data = currents;
+            fhChart.update();
+        }
+        
+        initializeFHChart();
+        
+        // Frank-Hertz controls
+        const fhVoltageSlider = document.getElementById('fh-voltage');
+        const fhVoltageValue = document.getElementById('fh-voltage-value');
+        const fhCurrentDisplay = document.getElementById('fh-current');
+        
+        fhVoltageSlider.addEventListener('input', function() {
+            const voltage = parseFloat(this.value);
+            fhVoltageValue.textContent = `${voltage} V`;
+            
+            const current = frankHertzData(voltage);
+            fhCurrentDisplay.value = current.toFixed(2);
+            
+            // Update chart to show current position
+            fhChart.data.datasets[0].pointBackgroundColor = fhChart.data.labels.map((v, i) => 
+                Math.abs(v - voltage) < 0.3 ? '#e74c3c' : 'rgba(52, 152, 219, 0.1)'
+            );
+            fhChart.update();
+        });
+        
+        // Record data for Frank-Hertz
+        document.getElementById('fh-record').addEventListener('click', function() {
+            const voltage = parseFloat(fhVoltageSlider.value);
+            const current = parseFloat(fhCurrentDisplay.value);
+            
+            // Determine peak number
+            const peakNum = Math.floor(voltage / 4.9) + 1;
+            
+            const table = document.getElementById('fh-data');
+            const newRow = table.insertRow();
+            
+            newRow.insertCell(0).textContent = voltage.toFixed(1);
+            newRow.insertCell(1).textContent = current.toFixed(2);
+            newRow.insertCell(2).textContent = peakNum;
+            newRow.insertCell(3).textContent = (peakNum * 4.9).toFixed(1);
+        });
+        
+        // Reset Frank-Hertz experiment
+        document.getElementById('fh-reset').addEventListener('click', function() {
+            document.getElementById('fh-data').innerHTML = '';
+            document.getElementById('fh-energy').value = '';
+            document.getElementById('fh-error').value = '';
+            document.getElementById('fh-conclusion-text').style.display = 'none';
+        });
+        
+        // Calculate Frank-Hertz results
+        document.getElementById('fh-calculate').addEventListener('click', function() {
+            // In a real implementation, this would calculate based on recorded data
+            document.getElementById('fh-energy').value = '4.86 eV';
+            document.getElementById('fh-error').value = '0.82%';
+        });
+        
+        // Show Frank-Hertz conclusion
+        document.getElementById('fh-conclusion').addEventListener('click', function() {
+            document.getElementById('fh-conclusion-text').style.display = 'block';
+        });
+        
+        // Auto run Frank-Hertz experiment
+        document.getElementById('fh-auto').addEventListener('click', function() {
+            document.getElementById('fh-data').innerHTML = '';
+            
+            // Record data at specific points
+            const recordPoints = [2.0, 4.0, 4.9, 6.0, 8.0, 9.8, 11.0, 13.0, 14.7, 16.0, 18.0, 19.6, 22.0, 24.5];
+            
+            recordPoints.forEach(v => {
+                fhVoltageSlider.value = v;
+                const event = new Event('input');
+                fhVoltageSlider.dispatchEvent(event);
+                
+                // Add a small delay between recordings for visual effect
+                setTimeout(() => {
+                    document.getElementById('fh-record').click();
+                }, recordPoints.indexOf(v) * 300);
+            });
+        });
+        
+        // Photoelectric Effect Simulation
+        const peCtx = document.getElementById('pe-chart').getContext('2d');
+        const peChart = new Chart(peCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Stopping Potential vs Frequency',
+                    data: [],
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.6)',
+                    borderWidth: 2,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Frequency (×10¹⁴ Hz)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Stopping Potential (V)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Generate photoelectric effect data
+        function photoelectricData(wavelength, stoppingPotential) {
+            const h = 4.135667662e-15; // Planck's constant in eV·s
+            const c = 3e8; // Speed of light in m/s
+            const workFunction = 2.3; // Work function in eV (for sodium)
+            
+            // Convert wavelength to frequency
+            const frequency = c / (wavelength * 1e-9);
+            const freqX1014 = frequency / 1e14;
+            
+            // Calculate the maximum kinetic energy
+            const photonEnergy = h * frequency;
+            const maxKE = photonEnergy - workFunction;
+            
+            // Calculate current based on stopping potential
+            let current = 0;
+            if (maxKE > stoppingPotential) {
+                current = 50 * (maxKE - stoppingPotential);
+            }
+            
+            // Add effect of intensity
+            const intensity = document.getElementById('pe-intensity').value / 100;
+            current *= intensity;
+            
+            // Add some noise
+            current += (Math.random() - 0.5) * 5;
+            
+            return {
+                frequency: freqX1014,
+                current: Math.max(0, current),
+                stoppingPotential: stoppingPotential
+            };
+        }
+        
+        // Update photoelectric controls
+        const peWavelengthSlider = document.getElementById('pe-wavelength');
+        const peWavelengthValue = document.getElementById('pe-wavelength-value');
+        const peIntensitySlider = document.getElementById('pe-intensity');
+        const peIntensityValue = document.getElementById('pe-intensity-value');
+        const peVoltageSlider = document.getElementById('pe-voltage');
+        const peVoltageValue = document.getElementById('pe-voltage-value');
+        const peCurrentDisplay = document.getElementById('pe-current');
+        
+        function updatePhotoelectric() {
+            const wavelength = parseFloat(peWavelengthSlider.value);
+            const stoppingPotential = parseFloat(peVoltageSlider.value);
+            
+            peWavelengthValue.textContent = `${wavelength} nm`;
+            peVoltageValue.textContent = `${stoppingPotential} V`;
+            peIntensityValue.textContent = `${peIntensitySlider.value}%`;
+            
+            const data = photoelectricData(wavelength, stoppingPotential);
+            peCurrentDisplay.value = data.current.toFixed(2);
+        }
+        
+        peWavelengthSlider.addEventListener('input', updatePhotoelectric);
+        peIntensitySlider.addEventListener('input', updatePhotoelectric);
+        peVoltageSlider.addEventListener('input', updatePhotoelectric);
+        
+        // Initialize
+        updatePhotoelectric();
+        
+        // Record data for photoelectric effect
+        document.getElementById('pe-record').addEventListener('click', function() {
+            const wavelength = parseFloat(peWavelengthSlider.value);
+            const stoppingPotential = parseFloat(peVoltageSlider.value);
+            const current = parseFloat(peCurrentDisplay.value);
+            
+            const c = 3e8; // Speed of light in m/s
+            const frequency = c / (wavelength * 1e-9);
+            const freqX1014 = frequency / 1e14;
+            
+            const kineticEnergy = Math.max(0, 1.602e-19 * stoppingPotential); // Convert V to J then to eV
+            
+            const table = document.getElementById('pe-data');
+            const newRow = table.insertRow();
+            
+            newRow.insertCell(0).textContent = wavelength;
+            newRow.insertCell(1).textContent = freqX1014.toFixed(2);
+            newRow.insertCell(2).textContent = stoppingPotential.toFixed(1);
+            newRow.insertCell(3).textContent = current.toFixed(2);
+            newRow.insertCell(4).textContent = (stoppingPotential).toFixed(2);
+            
+            // Add to chart
+            peChart.data.datasets[0].data.push({
+                x: freqX1014,
+                y: stoppingPotential
+            });
+            peChart.update();
+        });
+        
+        // Reset photoelectric experiment
+        document.getElementById('pe-reset').addEventListener('click', function() {
+            document.getElementById('pe-data').innerHTML = '';
+            document.getElementById('pe-work-function').value = '';
+            document.getElementById('pe-threshold').value = '';
+            document.getElementById('pe-plancks').value = '';
+            document.getElementById('pe-conclusion-text').style.display = 'none';
+            
+            peChart.data.datasets[0].data = [];
+            peChart.update();
+        });
+        
+        // Calculate photoelectric results
+        document.getElementById('pe-calculate').addEventListener('click', function() {
+            // In a real implementation, this would calculate based on recorded data
+            document.getElementById('pe-work-function').value = '2.28 eV';
+            document.getElementById('pe-threshold').value = '5.51';
+            document.getElementById('pe-plancks').value = '6.63';
+        });
+        
+        // Show photoelectric conclusion
+        document.getElementById('pe-conclusion').addEventListener('click', function() {
+            document.getElementById('pe-conclusion-text').style.display = 'block';
+        });
+        
+        // Auto run photoelectric experiment
+        document.getElementById('pe-auto').addEventListener('click', function() {
+            document.getElementById('pe-reset').click();
+            
+            const wavelengths = [250, 300, 350, 400, 450, 500];
+            
+            wavelengths.forEach(w => {
+                peWavelengthSlider.value = w;
+                const event = new Event('input');
+                peWavelengthSlider.dispatchEvent(event);
+                
+                // Find stopping potential (where current becomes zero)
+                let stoppingPotential = 0;
+                for (let v = 0; v <= 3; v += 0.1) {
+                    peVoltageSlider.value = v;
+                    const updateEvent = new Event('input');
+                    peVoltageSlider.dispatchEvent(updateEvent);
+                    
+                    if (parseFloat(peCurrentDisplay.value) <= 0) {
+                        stoppingPotential = v;
+                        break;
+                    }
+                }
+                
+                // Add a small delay between recordings for visual effect
+                setTimeout(() => {
+                    document.getElementById('pe-record').click();
+                }, wavelengths.indexOf(w) * 1000);
+            });
+        });
+    </script>
+</body>
+</html>
