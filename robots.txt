@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://github.com/pselvarengan/selvarenganparanthaman.github.io/tree/main/sitemap.xml
+Sitemap: https://pselvarengan.github.io/SelvaVirtualLab/tree/main/sitemap.xml
+
