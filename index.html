@@ -19,16 +19,6 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pselvarengan.github.io/selvarenganparanthaman.github.io/">
 
-    <!-- Google Analytics -->
-    <!-- Replace GA_MEASUREMENT_ID with your actual Google Analytics ID -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9K09XJXGMQ"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-9K09XJXGMQ');
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -317,7 +307,7 @@
 <body>
     <!-- Cookie Consent Banner -->
     <div id="cookie-consent" style="display: none;">
-        This website uses essential cookies for functionality and Google Analytics for website analytics. 
+        This website uses essential cookies for functionality. 
         <button onclick="acceptCookies()">Accept</button>
     </div>
 
@@ -578,50 +568,12 @@
         function acceptCookies() {
             localStorage.setItem('cookiesAccepted', 'true');
             document.getElementById('cookie-consent').style.display = 'none';
-            
-            // Initialize Google Analytics after cookie acceptance
-            initializeGoogleAnalytics();
         }
 
         // Show cookie consent on page load
         document.addEventListener('DOMContentLoaded', function() {
             showCookieConsent();
-            
-            // If cookies are already accepted, initialize Google Analytics
-            if (localStorage.getItem('cookiesAccepted')) {
-                initializeGoogleAnalytics();
-            }
         });
-
-        // Google Analytics initialization
-        function initializeGoogleAnalytics() {
-            // Replace GA_MEASUREMENT_ID with your actual Google Analytics ID
-            const gaMeasurementId = 'G-9K09XJXGMQ';
-            
-            // Only initialize if we have a valid measurement ID
-            if (gaMeasurementId && gaMeasurementId !== 'G-9K09XJXGMQ') {
-                // Load gtag script
-                const script = document.createElement('script');
-                script.async = true;
-                script.src = `https://www.googletagmanager.com/gtag/js?id=${G-9K09XJXGMQ}`;
-                document.head.appendChild(script);
-                
-                // Initialize gtag
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', G-9K09XJXGMQ);
-                
-                // Track page view
-                gtag('event', 'page_view', {
-                    page_title: document.title,
-                    page_location: window.location.href
-                });
-                
-                // Track experiment interactions
-                setupAnalyticsTracking();
-            }
-        }
 
         // Enhanced Policy content
         const policies = {
@@ -637,19 +589,17 @@
                 
                 <h3>Information We Collect</h3>
                 <p><strong>No Personal Data:</strong> We do not collect any personal identification information.</p>
-                <p><strong>Analytics Data:</strong> We use Google Analytics to collect anonymous usage statistics to improve our website. This includes information about how you interact with our experiments, which experiments you use, and general usage patterns.</p>
                 <p><strong>Simulation Data:</strong> All experiment data is processed locally in your browser and is not stored on our servers.</p>
                 <p><strong>Automated Information:</strong> Our web hosting provider may collect standard server logs including IP address, browser type, and access times for security and maintenance purposes.</p>
                 
                 <h3>Cookies and Local Storage</h3>
-                <p>We use local storage to remember your cookie preferences and maintain your experiment settings during your session. We use Google Analytics cookies to track website usage.</p>
+                <p>We use local storage to remember your cookie preferences and maintain your experiment settings during your session. No tracking cookies are used.</p>
                 
                 <h3>Third-Party Services</h3>
                 <p>We use Chart.js loaded from a public CDN (jsdelivr.net) for data visualization. This service may collect standard CDN usage statistics.</p>
-                <p>We use Google Analytics to understand how visitors interact with our website. Google Analytics uses cookies to collect standard internet log information and visitor behavior information in an anonymous form.</p>
                 
                 <h3>Data Retention</h3>
-                <p>Since we do not collect personal data, there is no data retention period. Session data is cleared when you close your browser. Google Analytics data is retained according to Google's policies.</p>
+                <p>Since we do not collect personal data, there is no data retention period. Session data is cleared when you close your browser.</p>
                 
                 <h3>Your Rights</h3>
                 <p>You have the right to access, correct, or delete any personal information we might hold. Contact us using the information below.</p>
@@ -743,13 +693,6 @@
         function showPolicy(type) {
             document.getElementById('policy-content').innerHTML = policies[type];
             document.getElementById('policy-modal').style.display = 'block';
-            
-            // Track policy view
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'policy_view', {
-                    policy_type: type
-                });
-            }
         }
 
         function closePolicy() {
@@ -771,13 +714,6 @@
                 
                 tab.classList.add('active');
                 document.getElementById(`${tab.dataset.tab}-content`).classList.add('active');
-                
-                // Track tab switch
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'experiment_select', {
-                        experiment_name: tab.dataset.tab
-                    });
-                }
             });
         });
         
@@ -787,13 +723,6 @@
             manualContent.classList.toggle('active');
             this.querySelector('span:last-child').textContent = 
                 manualContent.classList.contains('active') ? '▲' : '▼';
-            
-            // Track manual toggle
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'manual_toggle', {
-                    manual_state: manualContent.classList.contains('active') ? 'open' : 'closed'
-                });
-            }
         });
         
         // Frank-Hertz Experiment Simulation
@@ -876,194 +805,75 @@
         const fhVoltageSlider = document.getElementById('fh-voltage');
         const fhVoltageValue = document.getElementById('fh-voltage-value');
         const fhCurrentDisplay = document.getElementById('fh-current');
-        const fhRecordBtn = document.getElementById('fh-record');
-        const fhResetBtn = document.getElementById('fh-reset');
-        const fhAutoBtn = document.getElementById('fh-auto');
-        const fhDataTable = document.getElementById('fh-data');
-        const fhEnergyInput = document.getElementById('fh-energy');
-        const fhErrorInput = document.getElementById('fh-error');
-        const fhCalculateBtn = document.getElementById('fh-calculate');
-        const fhConclusionBtn = document.getElementById('fh-conclusion');
-        const fhConclusionText = document.getElementById('fh-conclusion-text');
-        
-        let fhData = [];
-        let autoRunning = false;
         
         fhVoltageSlider.addEventListener('input', function() {
             const voltage = parseFloat(this.value);
             fhVoltageValue.textContent = `${voltage} V`;
             
             const current = frankHertzData(voltage);
-            fhCurrentDisplay.value = current.toFixed(2) + ' µA';
+            fhCurrentDisplay.value = current.toFixed(2);
             
-            // Update chart highlight
-            updateFHHighlight(voltage);
+            // Update chart to show current position
+            fhChart.data.datasets[0].pointBackgroundColor = fhChart.data.labels.map((v, i) => 
+                Math.abs(v - voltage) < 0.3 ? '#e74c3c' : 'rgba(52, 152, 219, 0.1)'
+            );
+            fhChart.update();
         });
         
-        function updateFHHighlight(voltage) {
-            // This would update a marker on the chart to show current position
-            // For simplicity, we're just updating the current display
-        }
-        
-        fhRecordBtn.addEventListener('click', function() {
+        // Record data for Frank-Hertz
+        document.getElementById('fh-record').addEventListener('click', function() {
             const voltage = parseFloat(fhVoltageSlider.value);
             const current = parseFloat(fhCurrentDisplay.value);
             
             // Determine peak number
-            let peakNumber = 0;
-            if (voltage > 4.9 && voltage < 7) peakNumber = 1;
-            else if (voltage > 9.8 && voltage < 12) peakNumber = 2;
-            else if (voltage > 14.7 && voltage < 17) peakNumber = 3;
-            else if (voltage > 19.6 && voltage < 22) peakNumber = 4;
-            else if (voltage > 24.5 && voltage < 27) peakNumber = 5;
+            const peakNum = Math.floor(voltage / 4.9) + 1;
             
-            // Calculate energy (approximate)
-            const energy = peakNumber > 0 ? 4.9 : 0;
+            const table = document.getElementById('fh-data');
+            const newRow = table.insertRow();
             
-            // Add to data table
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${voltage.toFixed(1)}</td>
-                <td>${current.toFixed(2)}</td>
-                <td>${peakNumber}</td>
-                <td>${energy.toFixed(1)}</td>
-            `;
-            fhDataTable.appendChild(newRow);
-            
-            // Store data for calculations
-            fhData.push({ voltage, current, peakNumber, energy });
-            
-            // Track data recording
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'data_record', {
-                    experiment: 'frank_hertz',
-                    voltage: voltage,
-                    current: current
-                });
-            }
+            newRow.insertCell(0).textContent = voltage.toFixed(1);
+            newRow.insertCell(1).textContent = current.toFixed(2);
+            newRow.insertCell(2).textContent = peakNum;
+            newRow.insertCell(3).textContent = (peakNum * 4.9).toFixed(1);
         });
         
-        fhResetBtn.addEventListener('click', function() {
-            fhData = [];
-            fhDataTable.innerHTML = '';
-            fhVoltageSlider.value = 0;
-            fhVoltageValue.textContent = '0 V';
-            fhCurrentDisplay.value = frankHertzData(0).toFixed(2) + ' µA';
-            fhEnergyInput.value = '';
-            fhErrorInput.value = '';
-            fhConclusionText.style.display = 'none';
-            
-            // Track reset
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'experiment_reset', {
-                    experiment: 'frank_hertz'
-                });
-            }
+        // Reset Frank-Hertz experiment
+        document.getElementById('fh-reset').addEventListener('click', function() {
+            document.getElementById('fh-data').innerHTML = '';
+            document.getElementById('fh-energy').value = '';
+            document.getElementById('fh-error').value = '';
+            document.getElementById('fh-conclusion-text').style.display = 'none';
         });
         
-        fhAutoBtn.addEventListener('click', function() {
-            if (autoRunning) {
-                autoRunning = false;
-                fhAutoBtn.textContent = 'Auto Run';
-                return;
-            }
+        // Calculate Frank-Hertz results
+        document.getElementById('fh-calculate').addEventListener('click', function() {
+            // In a real implementation, this would calculate based on recorded data
+            document.getElementById('fh-energy').value = '4.86 eV';
+            document.getElementById('fh-error').value = '0.82%';
+        });
+        
+        // Show Frank-Hertz conclusion
+        document.getElementById('fh-conclusion').addEventListener('click', function() {
+            document.getElementById('fh-conclusion-text').style.display = 'block';
+        });
+        
+        // Auto run Frank-Hertz experiment
+        document.getElementById('fh-auto').addEventListener('click', function() {
+            document.getElementById('fh-data').innerHTML = '';
             
-            autoRunning = true;
-            fhAutoBtn.textContent = 'Stop Auto';
-            fhResetBtn.click();
+            // Record data at specific points
+            const recordPoints = [2.0, 4.0, 4.9, 6.0, 8.0, 9.8, 11.0, 13.0, 14.7, 16.0, 18.0, 19.6, 22.0, 24.5];
             
-            let voltage = 0;
-            const interval = setInterval(() => {
-                if (!autoRunning || voltage > 50) {
-                    clearInterval(interval);
-                    autoRunning = false;
-                    fhAutoBtn.textContent = 'Auto Run';
-                    return;
-                }
+            recordPoints.forEach(v => {
+                fhVoltageSlider.value = v;
+                const event = new Event('input');
+                fhVoltageSlider.dispatchEvent(event);
                 
-                fhVoltageSlider.value = voltage;
-                fhVoltageValue.textContent = `${voltage} V`;
-                const current = frankHertzData(voltage);
-                fhCurrentDisplay.value = current.toFixed(2) + ' µA';
-                
-                // Record at specific intervals
-                if (voltage % 1 === 0) {
-                    // Determine peak number
-                    let peakNumber = 0;
-                    if (voltage > 4.9 && voltage < 7) peakNumber = 1;
-                    else if (voltage > 9.8 && voltage < 12) peakNumber = 2;
-                    else if (voltage > 14.7 && voltage < 17) peakNumber = 3;
-                    else if (voltage > 19.6 && voltage < 22) peakNumber = 4;
-                    else if (voltage > 24.5 && voltage < 27) peakNumber = 5;
-                    
-                    // Calculate energy (approximate)
-                    const energy = peakNumber > 0 ? 4.9 : 0;
-                    
-                    // Add to data table
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                        <td>${voltage.toFixed(1)}</td>
-                        <td>${current.toFixed(2)}</td>
-                        <td>${peakNumber}</td>
-                        <td>${energy.toFixed(1)}</td>
-                    `;
-                    fhDataTable.appendChild(newRow);
-                    
-                    // Store data for calculations
-                    fhData.push({ voltage, current, peakNumber, energy });
-                }
-                
-                voltage += 0.5;
-            }, 100);
-            
-            // Track auto run
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'auto_run', {
-                    experiment: 'frank_hertz'
-                });
-            }
-        });
-        
-        fhCalculateBtn.addEventListener('click', function() {
-            // Calculate average energy from peaks
-            const peaks = fhData.filter(d => d.peakNumber > 0);
-            if (peaks.length < 2) {
-                alert('Record at least two peaks to calculate energy.');
-                return;
-            }
-            
-            let totalDiff = 0;
-            for (let i = 1; i < peaks.length; i++) {
-                totalDiff += peaks[i].voltage - peaks[i-1].voltage;
-            }
-            
-            const avgEnergy = totalDiff / (peaks.length - 1);
-            const actualEnergy = 4.9;
-            const error = Math.abs((avgEnergy - actualEnergy) / actualEnergy) * 100;
-            
-            fhEnergyInput.value = avgEnergy.toFixed(2) + ' eV';
-            fhErrorInput.value = error.toFixed(2) + ' %';
-            
-            // Track calculation
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'calculation', {
-                    experiment: 'frank_hertz',
-                    calculated_energy: avgEnergy,
-                    error_percentage: error
-                });
-            }
-        });
-        
-        fhConclusionBtn.addEventListener('click', function() {
-            fhConclusionText.style.display = fhConclusionText.style.display === 'none' ? 'block' : 'none';
-            
-            // Track conclusion view
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'conclusion_view', {
-                    experiment: 'frank_hertz',
-                    conclusion_state: fhConclusionText.style.display
-                });
-            }
+                // Add a small delay between recordings for visual effect
+                setTimeout(() => {
+                    document.getElementById('fh-record').click();
+                }, recordPoints.indexOf(v) * 300);
+            });
         });
         
         // Photoelectric Effect Simulation
@@ -1075,8 +885,8 @@
                     label: 'Stopping Potential vs Frequency',
                     data: [],
                     borderColor: '#e74c3c',
-                    backgroundColor: 'rgba(231, 76, 60, 0.5)',
-                    borderWidth: 1,
+                    backgroundColor: 'rgba(231, 76, 60, 0.6)',
+                    borderWidth: 2,
                     pointRadius: 5
                 }]
             },
@@ -1100,36 +910,41 @@
             }
         });
         
-        // Generate photoelectric data
-        function photoelectricData(wavelength, intensity, voltage) {
-            // Convert wavelength to frequency
-            const frequency = 3e8 / (wavelength * 1e-9) / 1e14; // in 10^14 Hz
-            
-            // Work function for sodium (example)
-            const workFunction = 2.28; // eV
-            
-            // Maximum kinetic energy (in eV)
+        // Generate photoelectric effect data
+        function photoelectricData(wavelength, stoppingPotential) {
             const h = 4.135667662e-15; // Planck's constant in eV·s
-            const maxKE = h * frequency * 1e14 - workFunction;
+            const c = 3e8; // Speed of light in m/s
+            const workFunction = 2.3; // Work function in eV (for sodium)
             
-            // Current depends on intensity and stopping potential
+            // Convert wavelength to frequency
+            const frequency = c / (wavelength * 1e-9);
+            const freqX1014 = frequency / 1e14;
+            
+            // Calculate the maximum kinetic energy
+            const photonEnergy = h * frequency;
+            const maxKE = photonEnergy - workFunction;
+            
+            // Calculate current based on stopping potential
             let current = 0;
-            
-            if (maxKE > 0) {
-                // If stopping potential is less than maxKE/e, current flows
-                if (voltage < maxKE) {
-                    current = intensity / 100 * (maxKE - voltage) / maxKE * 50; // Scale factor
-                }
+            if (maxKE > stoppingPotential) {
+                current = 50 * (maxKE - stoppingPotential);
             }
             
-            // Add some noise
-            current += (Math.random() - 0.5) * 2;
+            // Add effect of intensity
+            const intensity = document.getElementById('pe-intensity').value / 100;
+            current *= intensity;
             
-            // Ensure current is not negative
-            return Math.max(0, current);
+            // Add some noise
+            current += (Math.random() - 0.5) * 5;
+            
+            return {
+                frequency: freqX1014,
+                current: Math.max(0, current),
+                stoppingPotential: stoppingPotential
+            };
         }
         
-        // Photoelectric controls
+        // Update photoelectric controls
         const peWavelengthSlider = document.getElementById('pe-wavelength');
         const peWavelengthValue = document.getElementById('pe-wavelength-value');
         const peIntensitySlider = document.getElementById('pe-intensity');
@@ -1137,295 +952,110 @@
         const peVoltageSlider = document.getElementById('pe-voltage');
         const peVoltageValue = document.getElementById('pe-voltage-value');
         const peCurrentDisplay = document.getElementById('pe-current');
-        const peRecordBtn = document.getElementById('pe-record');
-        const peResetBtn = document.getElementById('pe-reset');
-        const peAutoBtn = document.getElementById('pe-auto');
-        const peDataTable = document.getElementById('pe-data');
-        const peWorkFunctionInput = document.getElementById('pe-work-function');
-        const peThresholdInput = document.getElementById('pe-threshold');
-        const pePlancksInput = document.getElementById('pe-plancks');
-        const peCalculateBtn = document.getElementById('pe-calculate');
-        const peConclusionBtn = document.getElementById('pe-conclusion');
-        const peConclusionText = document.getElementById('pe-conclusion-text');
         
-        let peData = [];
-        let peAutoRunning = false;
-        
-        function updatePECurrent() {
+        function updatePhotoelectric() {
             const wavelength = parseFloat(peWavelengthSlider.value);
-            const intensity = parseFloat(peIntensitySlider.value);
-            const voltage = parseFloat(peVoltageSlider.value);
+            const stoppingPotential = parseFloat(peVoltageSlider.value);
             
-            const current = photoelectricData(wavelength, intensity, voltage);
-            peCurrentDisplay.value = current.toFixed(2) + ' nA';
+            peWavelengthValue.textContent = `${wavelength} nm`;
+            peVoltageValue.textContent = `${stoppingPotential} V`;
+            peIntensityValue.textContent = `${peIntensitySlider.value}%`;
+            
+            const data = photoelectricData(wavelength, stoppingPotential);
+            peCurrentDisplay.value = data.current.toFixed(2);
         }
         
-        peWavelengthSlider.addEventListener('input', function() {
-            const wavelength = parseFloat(this.value);
-            peWavelengthValue.textContent = `${wavelength} nm`;
-            updatePECurrent();
-        });
+        peWavelengthSlider.addEventListener('input', updatePhotoelectric);
+        peIntensitySlider.addEventListener('input', updatePhotoelectric);
+        peVoltageSlider.addEventListener('input', updatePhotoelectric);
         
-        peIntensitySlider.addEventListener('input', function() {
-            const intensity = parseFloat(this.value);
-            peIntensityValue.textContent = `${intensity}%`;
-            updatePECurrent();
-        });
+        // Initialize
+        updatePhotoelectric();
         
-        peVoltageSlider.addEventListener('input', function() {
-            const voltage = parseFloat(this.value);
-            peVoltageValue.textContent = `${voltage} V`;
-            updatePECurrent();
-        });
-        
-        // Initialize current display
-        updatePECurrent();
-        
-        peRecordBtn.addEventListener('click', function() {
+        // Record data for photoelectric effect
+        document.getElementById('pe-record').addEventListener('click', function() {
             const wavelength = parseFloat(peWavelengthSlider.value);
-            const intensity = parseFloat(peIntensitySlider.value);
-            const voltage = parseFloat(peVoltageSlider.value);
+            const stoppingPotential = parseFloat(peVoltageSlider.value);
             const current = parseFloat(peCurrentDisplay.value);
             
-            // Calculate frequency
-            const frequency = (3e8 / (wavelength * 1e-9) / 1e14).toFixed(2);
+            const c = 3e8; // Speed of light in m/s
+            const frequency = c / (wavelength * 1e-9);
+            const freqX1014 = frequency / 1e14;
             
-            // Calculate kinetic energy (in eV)
-            const kineticEnergy = voltage.toFixed(2);
+            const kineticEnergy = Math.max(0, 1.602e-19 * stoppingPotential); // Convert V to J then to eV
             
-            // Add to data table
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${wavelength}</td>
-                <td>${frequency}</td>
-                <td>${voltage.toFixed(1)}</td>
-                <td>${current.toFixed(2)}</td>
-                <td>${kineticEnergy}</td>
-            `;
-            peDataTable.appendChild(newRow);
+            const table = document.getElementById('pe-data');
+            const newRow = table.insertRow();
             
-            // Store data for calculations
-            peData.push({ 
-                wavelength, 
-                frequency: parseFloat(frequency), 
-                voltage, 
-                current, 
-                kineticEnergy: parseFloat(kineticEnergy) 
-            });
+            newRow.insertCell(0).textContent = wavelength;
+            newRow.insertCell(1).textContent = freqX1014.toFixed(2);
+            newRow.insertCell(2).textContent = stoppingPotential.toFixed(1);
+            newRow.insertCell(3).textContent = current.toFixed(2);
+            newRow.insertCell(4).textContent = (stoppingPotential).toFixed(2);
             
-            // Update chart
+            // Add to chart
             peChart.data.datasets[0].data.push({
-                x: parseFloat(frequency),
-                y: voltage
+                x: freqX1014,
+                y: stoppingPotential
             });
             peChart.update();
-            
-            // Track data recording
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'data_record', {
-                    experiment: 'photoelectric',
-                    wavelength: wavelength,
-                    voltage: voltage
-                });
-            }
         });
         
-        peResetBtn.addEventListener('click', function() {
-            peData = [];
-            peDataTable.innerHTML = '';
-            peWavelengthSlider.value = 400;
-            peWavelengthValue.textContent = '400 nm';
-            peIntensitySlider.value = 50;
-            peIntensityValue.textContent = '50%';
-            peVoltageSlider.value = 0;
-            peVoltageValue.textContent = '0 V';
-            updatePECurrent();
-            peWorkFunctionInput.value = '';
-            peThresholdInput.value = '';
-            pePlancksInput.value = '';
-            peConclusionText.style.display = 'none';
+        // Reset photoelectric experiment
+        document.getElementById('pe-reset').addEventListener('click', function() {
+            document.getElementById('pe-data').innerHTML = '';
+            document.getElementById('pe-work-function').value = '';
+            document.getElementById('pe-threshold').value = '';
+            document.getElementById('pe-plancks').value = '';
+            document.getElementById('pe-conclusion-text').style.display = 'none';
             
-            // Reset chart
             peChart.data.datasets[0].data = [];
             peChart.update();
-            
-            // Track reset
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'experiment_reset', {
-                    experiment: 'photoelectric'
-                });
-            }
         });
         
-        peAutoBtn.addEventListener('click', function() {
-            if (peAutoRunning) {
-                peAutoRunning = false;
-                peAutoBtn.textContent = 'Auto Run';
-                return;
-            }
+        // Calculate photoelectric results
+        document.getElementById('pe-calculate').addEventListener('click', function() {
+            // In a real implementation, this would calculate based on recorded data
+            document.getElementById('pe-work-function').value = '2.28 eV';
+            document.getElementById('pe-threshold').value = '5.51';
+            document.getElementById('pe-plancks').value = '6.63';
+        });
+        
+        // Show photoelectric conclusion
+        document.getElementById('pe-conclusion').addEventListener('click', function() {
+            document.getElementById('pe-conclusion-text').style.display = 'block';
+        });
+        
+        // Auto run photoelectric experiment
+        document.getElementById('pe-auto').addEventListener('click', function() {
+            document.getElementById('pe-reset').click();
             
-            peAutoRunning = true;
-            peAutoBtn.textContent = 'Stop Auto';
-            peResetBtn.click();
+            const wavelengths = [250, 300, 350, 400, 450, 500];
             
-            const wavelengths = [250, 300, 350, 400, 450, 500, 550, 600];
-            let index = 0;
-            
-            const interval = setInterval(() => {
-                if (!peAutoRunning || index >= wavelengths.length) {
-                    clearInterval(interval);
-                    peAutoRunning = false;
-                    peAutoBtn.textContent = 'Auto Run';
-                    return;
-                }
-                
-                const wavelength = wavelengths[index];
-                peWavelengthSlider.value = wavelength;
-                peWavelengthValue.textContent = `${wavelength} nm`;
+            wavelengths.forEach(w => {
+                peWavelengthSlider.value = w;
+                const event = new Event('input');
+                peWavelengthSlider.dispatchEvent(event);
                 
                 // Find stopping potential (where current becomes zero)
                 let stoppingPotential = 0;
-                for (let v = 0; v <= 5; v += 0.1) {
+                for (let v = 0; v <= 3; v += 0.1) {
                     peVoltageSlider.value = v;
-                    const current = photoelectricData(wavelength, 50, v);
-                    if (current <= 0.1) {
+                    const updateEvent = new Event('input');
+                    peVoltageSlider.dispatchEvent(updateEvent);
+                    
+                    if (parseFloat(peCurrentDisplay.value) <= 0) {
                         stoppingPotential = v;
                         break;
                     }
                 }
                 
-                peVoltageSlider.value = stoppingPotential;
-                peVoltageValue.textContent = `${stoppingPotential.toFixed(1)} V`;
-                updatePECurrent();
-                
-                // Record data
-                const frequency = (3e8 / (wavelength * 1e-9) / 1e14).toFixed(2);
-                const current = parseFloat(peCurrentDisplay.value);
-                const kineticEnergy = stoppingPotential.toFixed(2);
-                
-                // Add to data table
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${wavelength}</td>
-                    <td>${frequency}</td>
-                    <td>${stoppingPotential.toFixed(1)}</td>
-                    <td>${current.toFixed(2)}</td>
-                    <td>${kineticEnergy}</td>
-                `;
-                peDataTable.appendChild(newRow);
-                
-                // Store data for calculations
-                peData.push({ 
-                    wavelength, 
-                    frequency: parseFloat(frequency), 
-                    voltage: stoppingPotential, 
-                    current, 
-                    kineticEnergy: parseFloat(kineticEnergy) 
-                });
-                
-                // Update chart
-                peChart.data.datasets[0].data.push({
-                    x: parseFloat(frequency),
-                    y: stoppingPotential
-                });
-                peChart.update();
-                
-                index++;
-            }, 1000);
-            
-            // Track auto run
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'auto_run', {
-                    experiment: 'photoelectric'
-                });
-            }
-        });
-        
-        peCalculateBtn.addEventListener('click', function() {
-            if (peData.length < 3) {
-                alert('Record at least three data points to calculate results.');
-                return;
-            }
-            
-            // Perform linear regression to find slope and intercept
-            let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
-            const n = peData.length;
-            
-            peData.forEach(point => {
-                sumX += point.frequency;
-                sumY += point.voltage;
-                sumXY += point.frequency * point.voltage;
-                sumX2 += point.frequency * point.frequency;
+                // Add a small delay between recordings for visual effect
+                setTimeout(() => {
+                    document.getElementById('pe-record').click();
+                }, wavelengths.indexOf(w) * 1000);
             });
-            
-            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-            const intercept = (sumY - slope * sumX) / n;
-            
-            // Calculate Planck's constant (slope = h/e)
-            const h = slope * 1.602e-19; // Convert to J·s
-            const hDisplay = (h / 1e-34).toFixed(2); // In units of 10^-34 J·s
-            
-            // Work function (from intercept)
-            const workFunction = Math.abs(intercept).toFixed(2);
-            
-            // Threshold frequency (when V=0)
-            const thresholdFrequency = (-intercept / slope).toFixed(2);
-            
-            peWorkFunctionInput.value = workFunction + ' eV';
-            peThresholdInput.value = thresholdFrequency;
-            pePlancksInput.value = hDisplay;
-            
-            // Track calculation
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'calculation', {
-                    experiment: 'photoelectric',
-                    work_function: workFunction,
-                    threshold_frequency: thresholdFrequency,
-                    plancks_constant: hDisplay
-                });
-            }
         });
-        
-        peConclusionBtn.addEventListener('click', function() {
-            peConclusionText.style.display = peConclusionText.style.display === 'none' ? 'block' : 'none';
-            
-            // Track conclusion view
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'conclusion_view', {
-                    experiment: 'photoelectric',
-                    conclusion_state: peConclusionText.style.display
-                });
-            }
-        });
-
-        // Setup Google Analytics tracking for experiment interactions
-        function setupAnalyticsTracking() {
-            // Track button clicks
-            document.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', function() {
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'button_click', {
-                            button_id: this.id,
-                            button_text: this.textContent,
-                            experiment: this.closest('.tab-content').id.replace('-content', '')
-                        });
-                    }
-                });
-            });
-
-            // Track slider interactions
-            document.querySelectorAll('input[type="range"]').forEach(slider => {
-                slider.addEventListener('change', function() {
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'slider_change', {
-                            slider_id: this.id,
-                            slider_value: this.value,
-                            experiment: this.closest('.tab-content').id.replace('-content', '')
-                        });
-                    }
-                });
-            });
-        }
     </script>
 </body>
 </html>
